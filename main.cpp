@@ -31,8 +31,11 @@ int solution(const char* s){
             printf("진입성공? %d\n", tem);
             tem += 1;
           }
+          else{
+            tem = 0;
+            break;
+          }
         }
-        
         if(tem > answer) answer = tem;
       }
     }
@@ -44,7 +47,7 @@ int solution(const char* s){
 
 
 int main(){
-  const char *hello = "ababba";
+  const char *hello = "dmstkdrmatkd";
   solution(hello);
   
 }
