@@ -2,91 +2,43 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
-#define MAX 2500
 
 
-char pel[MAX];
-int flag=0;
 
-void push(char a){
-  pel[++flag] = a;
+int oddeven(int i, int j){
+  return (j-i)%2;
 }
-
-
-char pop(){
-  if(flag == 0){
-    return 0;
-  }
-  return pel[flag--];
-}
-
-void clear(){
-  flag = 0;
-}
-
-void repeat(int answer){
-
-}
-
-
 
 // 파라미터로 주어지는 문자열은 const로 주어집니다. 변경하려면 문자열을 복사해서 사용하세요.
 int solution(const char* s) {
-    int answer = 1;
-    int len = strlen(s);        //주어진 문자열의 길이
-    int i;                      //반복문 용
-    int tem;
+  
+  int answer = 1;
+  int len = strlen(s);        //주어진 문자열의 길이
+  int i, j;                      //반복문 용
+  int tem = 1;
     
-    for(i=0; i<len; i++){
-      restart:
-      if(i>=1 && s[i] == s[i-1]){ //바로 이전 것과 같은 값을 가질 때 답은 짝수다
-        printf("정답은 짝수\n");
-        printf("%d 조건\n", flag);
-        pop();
-        tem = 2;
-        while(1){                 //이제 반복문을 통해 다음 값과 이전 스택 값을 비교하며 길이를 늘려나간다.
-        printf("%d 반복\n", flag);
-          if(s[++i] == pop() && i<len){      //다음값도 스택값과 같다면 길이를 늘린다.
+  for(i=0; i<len-1; i++){
+    for(j=i+1; j<len; j++){
+      if(s[i] == s[j]){
+        
+        tem = 1 + oddeven(i,j);               //짝수면 1 더해서 2로 시작, 홀수면 0 더해서 1로시작
+        int t, i1 = i, j1 = j;
+        for(t=(j1-i1)/2; t<1; t--){            //t는 최소 1, 최대 len-1
+
+          if(s[++i1] == s[++j1]){
             tem += 2;
           }
-          else{
-            clear();                // 팰린드롬이 아닐경우 스택 초기화(정확히는 flag를 초기화. 값 자체는 배열에 남아 있음.)
-            if(tem>answer) answer = tem;
-            goto restart;
-          }
         }
-      }
-      if(i>=2 && s[i] == s[i-2]){ // 2개 전 것과 같은 값을 가질 때 답은 홀수다
-        printf("정답은 홀수\n");
-        printf("%d 조건\n", flag);
-        tem = 3;
-        pop();
-        pop();
-        while(1){                 //이제 반복문을 통해 다음 값과 이전 스택 값을 비교하며 길이를 늘려나간다.
-          printf("%d 반복\n", flag);
-          if(s[++i] == pop() && i<len){      //다음값도 스택값과 같다면 길이를 늘린다.
-            tem += 2;
-          }
-          else{
-            clear();                // 팰린드롬이 아닐경우 스택 초기화(정확히는 flag를 초기화. 값 자체는 배열에 남아 있음.)
-            if(tem>answer) answer = tem;
-            goto restart;
-          }
-        }
-      }
-      else{                       //이도저도 아니라면 스택에 값을 집어넣고 다음으로 넘어가라
-        push(s[i]);
-        printf("%d 푸시\n", flag);
       }
     }
-    printf("%d", answer);
+  }
 
-    return answer;
+
 }
 
 
 int main(){
-  const char *hello = "abacde";
+  const char *hello = "aaa";
   solution(hello);
   
 }
